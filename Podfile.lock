@@ -1,0 +1,20 @@
+PODS:
+  - Alamofire (4.8.0)
+  - FCFileManager (1.0.20)
+
+DEPENDENCIES:
+  - Alamofire
+  - FCFileManager
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - FCFileManager
+
+SPEC CHECKSUMS:
+  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  FCFileManager: e0f73316e6aa2eb04d2ff4caa75fe7df1ae44270
+
+PODFILE CHECKSUM: 8195c58215ba3ff995d6642e4d45042c359fca42
+
+COCOAPODS: 1.5.2
