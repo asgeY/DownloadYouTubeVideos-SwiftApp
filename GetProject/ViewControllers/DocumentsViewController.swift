@@ -12,6 +12,7 @@ import AVKit
 import AVFoundation
 import CoreVideo
 import Photos
+import FCFileManager
 
 class DocumentsViewController: UIViewController {
     
@@ -19,6 +20,7 @@ class DocumentsViewController: UIViewController {
     var files        : [URL]!
     var documentsDirectoryPath : String?
     let bhalert = BHAlert()
+    var Player = AVPlayer()
 
     @IBOutlet weak var DocumentsTableView: UITableView!
     
@@ -27,6 +29,7 @@ class DocumentsViewController: UIViewController {
         DocumentsTableView.delegate = self
         DocumentsTableView.dataSource = self
         SetupDocumentsDirectoryPath()
+        setupRemoteTransportControls()
 }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +55,34 @@ class DocumentsViewController: UIViewController {
             self.DocumentsTableView.endUpdates();
         }
     }
+    
+    
+    func setupRemoteTransportControls() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        // Play Command
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            if self.Player.rate == 0.0 {
+                self.Player.play()
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        // Pause Command
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            if self.Player.rate == 1.0 {
+                self.Player.pause()
+                return .success
+            }
+            return .commandFailed
+        }
+        
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.pauseCommand.isEnabled = true
+    }
+    
+    
 }
 
 extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -77,13 +108,16 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
         
         let PlayButtonAction = UIAlertAction(title: "Play video", style: .default) { (action) in
             let PlayerItem = AVPlayerItem(url: URL(string: self.files[indexPath.row].absoluteString)!)
-            let Player = AVPlayer(playerItem: PlayerItem)
+            self.Player = AVPlayer(playerItem: PlayerItem)
             let PlayerController = AVPlayerViewController()
-            PlayerController.player = Player
+            PlayerController.player = self.Player
+        
+            self.present(PlayerController, animated: true)
+            self.Player.play()
             
-            self.present(PlayerController, animated: true) {
-                Player.play()
-            }
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+                MPMediaItemPropertyTitle: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".mp4", with: "")
+            ]
         }
         
         
@@ -103,10 +137,24 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         
+        let ShareItem = UIAlertAction(title: "Share", style: .default) { (action) in
+            let ShareVC = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
+            self.present(ShareVC, animated: true, completion: nil)
+        }
+        
+        
+        let RemoveItem = UIAlertAction(title: "Remove Item", style: .default) { (action) in
+            FCFileManager.removeItem(atPath: self.files[indexPath.row].lastPathComponent)
+            self.SetupDocumentsDirectoryPath()
+        }
+        
+        
         let CancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         AlertController.addAction(PlayButtonAction)
         AlertController.addAction(SaveVideoAction)
+        AlertController.addAction(ShareItem)
+        AlertController.addAction(RemoveItem)
         AlertController.addAction(CancelAction)
         self.present(AlertController, animated: true, completion: nil)
     }

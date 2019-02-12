@@ -19,10 +19,4 @@ open class BHAlert: UIAlertController {
         Target.present(BHVC, animated: true, completion: nil)
         
     }
-    
-    func ShowBHAlertView(Title: String, message: String,TitleButton: String, delegate: Any?) {
-        let BHAlertView = UIAlertView(title: Title, message: message, delegate: delegate, cancelButtonTitle: TitleButton)
-        BHAlertView.show()
-    }
-    
 }
