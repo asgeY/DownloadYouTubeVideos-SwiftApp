@@ -1,20 +1,36 @@
 PODS:
-  - Alamofire (4.8.0)
+  - Alamofire (4.8.1)
   - FCFileManager (1.0.20)
+  - FRPreferences (1.0.10)
+  - SUBLicenseViewController (1.0.1)
 
 DEPENDENCIES:
   - Alamofire
   - FCFileManager
+  - FRPreferences (from `https://github.com/FouadRaheb/FRPreferences`)
+  - SUBLicenseViewController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - FCFileManager
+    - SUBLicenseViewController
+
+EXTERNAL SOURCES:
+  FRPreferences:
+    :git: https://github.com/FouadRaheb/FRPreferences
+
+CHECKOUT OPTIONS:
+  FRPreferences:
+    :commit: d33c8cf6c03d53643c2e8a7526bf015c4bed3a5d
+    :git: https://github.com/FouadRaheb/FRPreferences
 
 SPEC CHECKSUMS:
-  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   FCFileManager: e0f73316e6aa2eb04d2ff4caa75fe7df1ae44270
+  FRPreferences: 4f2f10b8a280d3db34ab4138d4744ae0a8d9d176
+  SUBLicenseViewController: 7903a314448eeae9cf8e33127bad2019f7cb11d5
 
-PODFILE CHECKSUM: 8195c58215ba3ff995d6642e4d45042c359fca42
+PODFILE CHECKSUM: 5e34362068dffc9a39a794d3a5963d6dc79f4631
 
 COCOAPODS: 1.5.2

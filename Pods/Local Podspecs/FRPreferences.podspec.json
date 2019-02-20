@@ -1,0 +1,23 @@
+{
+  "name": "FRPreferences",
+  "version": "1.0.10",
+  "summary": "In-App Preferences controls built easily",
+  "homepage": "https://github.com/FouadRaheb/FRPreferences",
+  "license": "GPL",
+  "authors": {
+    "Fouad Raheb": "fouad.raheb@gmail.com"
+  },
+  "social_media_url": "https://twitter.com/FouadRaheb",
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/FouadRaheb/FRPreferences.git",
+    "tag": "1.0.10"
+  },
+  "source_files": [
+    "FRPreferences/*.{h,m}",
+    "FRPreferences/**/*.{h,m}"
+  ],
+  "requires_arc": true
+}
