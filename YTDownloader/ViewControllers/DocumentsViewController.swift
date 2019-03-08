@@ -8,21 +8,21 @@
 
 import UIKit
 import MediaPlayer
-import AVKit
 import AVFoundation
-import CoreVideo
-import PhotosUI
 import SUBLicenseViewController
 import FRPreferences
 import Photos
 import FCFileManager
+import GoogleMobileAds
+import LocalAuthentication
 
-class DocumentsViewController: UIViewController, UINavigationControllerDelegate {
+class DocumentsViewController: UIViewController {
     
     
     var selectedPath            : URL?
     var files                   : [URL]!
     var documentsDirectoryPath  : String?
+    var bannerView              : GADBannerView!
     let infoPlistPath           = Bundle.main.infoDictionary
     var profileimage            = URL(string: "https://twitter.com/BandarHL/profile_image?size=bigger")
     var profileimage2           = URL(string: "https://twitter.com/AmeerDesgin/profile_image?size=bigger")
@@ -30,19 +30,59 @@ class DocumentsViewController: UIViewController, UINavigationControllerDelegate 
     let BHConvertSwift          = BHConverting()
     let BHConvertObjC           = BHConvertingObjc()
     var Player                  = AVPlayer()
-
+    
+    @IBOutlet weak var EmptyLabel: UILabel!
     @IBOutlet weak var DocumentsTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        EmptyLabel.isHidden = true
         DocumentsTableView.delegate   = self
         DocumentsTableView.dataSource = self
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerView.adUnitID = "ca-app-pub-2502501640180711/8760771556"
+        bannerView.rootViewController = self
+        bannerView.delegate = self
+        bannerView.load(GADRequest())
+        
+        addBannerViewToView(bannerView)
         SetupDocumentsDirectoryPath()
         setupRemoteTransportControlsForVideoPlayer()
-}
+        EmptyTableView()
+    }
+    
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        view.addConstraints(
+            [NSLayoutConstraint(item: bannerView,
+                                attribute: .bottom,
+                                relatedBy: .equal,
+                                toItem: bottomLayoutGuide,
+                                attribute: .top,
+                                multiplier: 1,
+                                constant: 0),
+             NSLayoutConstraint(item: bannerView,
+                                attribute: .centerX,
+                                relatedBy: .equal,
+                                toItem: view,
+                                attribute: .centerX,
+                                multiplier: 1,
+                                constant: 0)
+            ])
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         SetupDocumentsDirectoryPath()
+        EmptyTableView()
+    }
+    
+    fileprivate func EmptyTableView() {
+        if files.count == 0 {
+            self.EmptyLabel.isHidden = false
+        } else {
+            self.EmptyLabel.isHidden = true
+        }
     }
     
     fileprivate func SetupDocumentsDirectoryPath() {
@@ -109,21 +149,43 @@ class DocumentsViewController: UIViewController, UINavigationControllerDelegate 
         }
         
         let section2 = FRPSection(title: "Developer", footer: nil)
-        let DataImage = try? Data(contentsOf: profileimage! as URL)
-        let BandarHL = FRPDeveloperCell(title: "BandarHelal", detail: "@BandarHL", image: UIImage(data: DataImage!), url: "https://twitter.com/BandarHL")
-        
-        
         let section3 = FRPSection(title: "Designer", footer: nil)
-        let DataImage2 = try? Data(contentsOf: profileimage2! as URL)
-        let Ameer = FRPDeveloperCell(title: "Ameer 👨‍🎨", detail: "@AmeerDesgin", image: UIImage(data: DataImage2!), url: "https://twitter.com/AmeerDesgin")
+        
+        
+        if Reachability.isConnectedToNetwork() {
+            let DataImage = try? Data(contentsOf: profileimage! as URL)
+            let BandarHL = FRPDeveloperCell(title: "BandarHelal", detail: "@BandarHL", image: UIImage(data: DataImage!), url: "https://twitter.com/BandarHL")
+            
+            let DataImage2 = try? Data(contentsOf: profileimage2! as URL)
+            let Ameer = FRPDeveloperCell(title: "Ameer 👨‍🎨", detail: "@AmeerDesgin", image: UIImage(data: DataImage2!), url: "https://twitter.com/AmeerDesgin")
+            section2?.addCells([BandarHL!])
+            section3?.addCells([Ameer!])
+        } else {
+            let BandarHL = FRPDeveloperCell(title: "BandarHelal", detail: "@BandarHL", image: UIImage(named: "BandarHL.png"), url: "https://twitter.com/BandarHL")
+            let Ameer = FRPDeveloperCell(title: "Ameer 👨‍🎨", detail: "@AmeerDesgin", image: UIImage(named: "ameer.png"), url: "https://twitter.com/AmeerDesgin")
+            section2?.addCells([BandarHL!])
+            section3?.addCells([Ameer!])
+        }
         
         
         section1?.addCells([AppVersionCell!, AppBundleCell!, LinkCell!])
-        section2?.addCells([BandarHL!])
-        section3?.addCells([Ameer!])
         let table = FRPreferences.table(withSections: [section1!, section2!, section3!], title: "App information", tintColor: nil)
         self.navigationController?.pushViewController(table!, animated: true)
     }
+    
+    func generateThumbnail(VideoAsset: AVAsset) -> UIImage? {
+        do {
+            let imgGenerator = AVAssetImageGenerator(asset: VideoAsset)
+            imgGenerator.appliesPreferredTrackTransform = true
+            let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(value: 0, timescale: 1), actualTime: nil)
+            let thumbnail = UIImage(cgImage: cgImage)
+            return thumbnail
+        } catch let error {
+            print("*** Error generating thumbnail: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
 }
 
 extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -148,7 +210,7 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             
             Cell.FileNameLabel.text = FileName.replacingOccurrences(of: ".mp4", with: "")
             Cell.SizeandDurVideo.text = "\(self.files[indexPath.row].absoluteURL.fileSizeString) | \(minutes):\(seconds)"
-            Cell.ImageFile.image = UIImage(named: "video-player")
+            Cell.ImageFile.image = self.generateThumbnail(VideoAsset: asset)
             
         } else if FileName.lowercased().contains(".m4a") {
             
@@ -176,7 +238,6 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
         
         
         print("File size:\(self.files[indexPath.row].absoluteURL.fileSizeString)")
-        
         
         if String(self.files[indexPath.row].lastPathComponent.suffix(4)) == ".mp4" {
             print("file is MP4")
@@ -270,12 +331,17 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             let ShareAction = UIAlertAction(title: "Share", style: .default) { (action) in
                 let ShareViewController = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
                 self.present(ShareViewController, animated: true, completion: nil)
-                
+            }
+            
+            let removeitemAction = UIAlertAction(title: "Remove item", style: .default) { (action) in
+                FCFileManager.removeItem(atPath: self.files[indexPath.row].lastPathComponent)
+                self.SetupDocumentsDirectoryPath()
             }
             
             let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
             BHAlertController.addAction(ShareAction)
+            BHAlertController.addAction(removeitemAction)
             BHAlertController.addAction(Cancel)
             self.present(BHAlertController, animated: true, completion: nil)
             
@@ -288,12 +354,17 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             let ShareAction = UIAlertAction(title: "Share", style: .default) { (action) in
                 let ShareViewController = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
                 self.present(ShareViewController, animated: true, completion: nil)
-                
+            }
+            
+            let removeitemAction = UIAlertAction(title: "Remove item", style: .default) { (action) in
+                FCFileManager.removeItem(atPath: self.files[indexPath.row].lastPathComponent)
+                self.SetupDocumentsDirectoryPath()
             }
             
             let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
             BHAlertController.addAction(ShareAction)
+            BHAlertController.addAction(removeitemAction)
             BHAlertController.addAction(Cancel)
             self.present(BHAlertController, animated: true, completion: nil)
             
@@ -387,5 +458,40 @@ extension URL {
     
     var creationDate: Date? {
         return attributes?[.creationDate] as? Date
+    }
+}
+
+extension DocumentsViewController: GADBannerViewDelegate {
+    /// Tells the delegate an ad request loaded an ad.
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("adViewDidReceiveAd")
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func adView(_ bannerView: GADBannerView,
+                didFailToReceiveAdWithError error: GADRequestError) {
+        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    /// Tells the delegate that a full-screen view will be presented in response
+    /// to the user clicking on an ad.
+    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("adViewWillPresentScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view will be dismissed.
+    func adViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewWillDismissScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view has been dismissed.
+    func adViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewDidDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app (such as
+    /// the App Store), backgrounding the current app.
+    func adViewWillLeaveApplication(_ bannerView: GADBannerView) {
+        print("adViewWillLeaveApplication")
     }
 }

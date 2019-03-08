@@ -14,4 +14,5 @@
 - (void)ConvertVideoToAudio:(NSURL *)VideoURLPath DocumentsPath:(NSURL *)destination;
 - (void)exportVideoWithAsset:(AVAsset *)VideoAsset DocumentsPath:(NSURL *)destination;
 - (CGImageRef)GetFrameGrap:(AVAsset *)AssetVideo;
+- (void)exportAsynchronouslyWithAVAsset:(AVAsset *)asset DocumentsPath:(NSURL *)destination;
 @end

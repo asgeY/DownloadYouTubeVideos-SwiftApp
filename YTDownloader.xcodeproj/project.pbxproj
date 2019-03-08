@@ -28,6 +28,11 @@
 		5045A0AF21F34BDC009234E9 /* String+YouTube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5045A0A321F34BDC009234E9 /* String+YouTube.swift */; };
 		5045A0B021F34BDC009234E9 /* URL+YouTube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5045A0A421F34BDC009234E9 /* URL+YouTube.swift */; };
 		5045A0B121F34BDC009234E9 /* YTBExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5045A0A521F34BDC009234E9 /* YTBExtension.swift */; };
+		504A7987223188A200D6361B /* DaiYoutubeParserWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 504A7980223188A200D6361B /* DaiYoutubeParserWebView.m */; };
+		504A7988223188A200D6361B /* DaiYoutubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 504A7983223188A200D6361B /* DaiYoutubeParser.m */; };
+		504A7989223188A200D6361B /* YoutubeParserBridge.html in Resources */ = {isa = PBXBuildFile; fileRef = 504A7984223188A200D6361B /* YoutubeParserBridge.html */; };
+		504A798A223188A200D6361B /* DaiYoutubeParserOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 504A7986223188A200D6361B /* DaiYoutubeParserOperation.m */; };
+		50508402221F2B3D00A1879E /* checkInternet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50508401221F2B3D00A1879E /* checkInternet.swift */; };
 		50526AC121FC48AE003D8B13 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50526AC021FC48AE003D8B13 /* Alamofire.framework */; };
 		508659D822187A7000E5A2A1 /* FRPreferences.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508659D722187A7000E5A2A1 /* FRPreferences.framework */; };
 		508659DA2218828400E5A2A1 /* SUBLicenseViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508659D92218828400E5A2A1 /* SUBLicenseViewController.framework */; };
@@ -37,8 +42,12 @@
 		508A762F221DBC5500F87F6F /* UIButton+BHExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508A762C221DBC5500F87F6F /* UIButton+BHExtension.swift */; };
 		508A7630221DBC5500F87F6F /* UIImageView+BHExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508A762D221DBC5500F87F6F /* UIImageView+BHExtension.swift */; };
 		508A7631221DBC5500F87F6F /* UIView+BHExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508A762E221DBC5500F87F6F /* UIView+BHExtension.swift */; };
+		508A7637221DFE7300F87F6F /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508A7636221DFE7300F87F6F /* FirebaseCore.framework */; };
+		508A7639221DFE7300F87F6F /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508A7638221DFE7300F87F6F /* GoogleUtilities.framework */; };
+		508A763B221DFE7300F87F6F /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508A763A221DFE7300F87F6F /* nanopb.framework */; };
 		508D21912209F6E5001643E6 /* DocumentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D21902209F6E5001643E6 /* DocumentsTableViewCell.swift */; };
 		508D21952209F753001643E6 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D21942209F753001643E6 /* DocumentsViewController.swift */; };
+		509E6B6122201EF600910337 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 509E6B6022201EF600910337 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +76,15 @@
 		5045A0A321F34BDC009234E9 /* String+YouTube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+YouTube.swift"; sourceTree = "<group>"; };
 		5045A0A421F34BDC009234E9 /* URL+YouTube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+YouTube.swift"; sourceTree = "<group>"; };
 		5045A0A521F34BDC009234E9 /* YTBExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YTBExtension.swift; sourceTree = "<group>"; };
+		504A797F223188A200D6361B /* DaiYoutubeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaiYoutubeParser.h; sourceTree = "<group>"; };
+		504A7980223188A200D6361B /* DaiYoutubeParserWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaiYoutubeParserWebView.m; sourceTree = "<group>"; };
+		504A7981223188A200D6361B /* DaiYoutubeParserOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaiYoutubeParserOperation.h; sourceTree = "<group>"; };
+		504A7982223188A200D6361B /* DaiYoutubeParserDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaiYoutubeParserDefine.h; sourceTree = "<group>"; };
+		504A7983223188A200D6361B /* DaiYoutubeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaiYoutubeParser.m; sourceTree = "<group>"; };
+		504A7984223188A200D6361B /* YoutubeParserBridge.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YoutubeParserBridge.html; sourceTree = "<group>"; };
+		504A7985223188A200D6361B /* DaiYoutubeParserWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaiYoutubeParserWebView.h; sourceTree = "<group>"; };
+		504A7986223188A200D6361B /* DaiYoutubeParserOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaiYoutubeParserOperation.m; sourceTree = "<group>"; };
+		50508401221F2B3D00A1879E /* checkInternet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = checkInternet.swift; sourceTree = "<group>"; };
 		50526AC021FC48AE003D8B13 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508659D722187A7000E5A2A1 /* FRPreferences.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRPreferences.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508659D92218828400E5A2A1 /* SUBLicenseViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SUBLicenseViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,8 +95,12 @@
 		508A762C221DBC5500F87F6F /* UIButton+BHExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+BHExtension.swift"; sourceTree = "<group>"; };
 		508A762D221DBC5500F87F6F /* UIImageView+BHExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+BHExtension.swift"; sourceTree = "<group>"; };
 		508A762E221DBC5500F87F6F /* UIView+BHExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+BHExtension.swift"; sourceTree = "<group>"; };
+		508A7636221DFE7300F87F6F /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		508A7638221DFE7300F87F6F /* GoogleUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		508A763A221DFE7300F87F6F /* nanopb.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = nanopb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508D21902209F6E5001643E6 /* DocumentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsTableViewCell.swift; sourceTree = "<group>"; };
 		508D21942209F753001643E6 /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
+		509E6B6022201EF600910337 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5F95203C28D879333223B2F4 /* Pods-YTDownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTDownloader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YTDownloader/Pods-YTDownloader.debug.xcconfig"; sourceTree = "<group>"; };
 		A07AC201673523504AFF1323 /* Pods-YTDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTDownloader.release.xcconfig"; path = "Pods/Target Support Files/Pods-YTDownloader/Pods-YTDownloader.release.xcconfig"; sourceTree = "<group>"; };
 		A7F44D2B06EB972B5D631C8E /* Pods-GetProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GetProject/Pods-GetProject.debug.xcconfig"; sourceTree = "<group>"; };
@@ -90,6 +112,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				508A7637221DFE7300F87F6F /* FirebaseCore.framework in Frameworks */,
+				508A7639221DFE7300F87F6F /* GoogleUtilities.framework in Frameworks */,
+				508A763B221DFE7300F87F6F /* nanopb.framework in Frameworks */,
 				508659DA2218828400E5A2A1 /* SUBLicenseViewController.framework in Frameworks */,
 				508659D822187A7000E5A2A1 /* FRPreferences.framework in Frameworks */,
 				50250CB62201F117004D8939 /* FCFileManager.framework in Frameworks */,
@@ -104,6 +129,9 @@
 		4673CB7CF4EC5D43E68B8FAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				508A7636221DFE7300F87F6F /* FirebaseCore.framework */,
+				508A7638221DFE7300F87F6F /* GoogleUtilities.framework */,
+				508A763A221DFE7300F87F6F /* nanopb.framework */,
 				508659D92218828400E5A2A1 /* SUBLicenseViewController.framework */,
 				508659D722187A7000E5A2A1 /* FRPreferences.framework */,
 				50250CB52201F117004D8939 /* FCFileManager.framework */,
@@ -140,9 +168,10 @@
 				5045A04021F331C8009234E9 /* Main.storyboard */,
 				5045A04321F331CB009234E9 /* Assets.xcassets */,
 				5045A04521F331CB009234E9 /* LaunchScreen.storyboard */,
-				5045A04821F331CB009234E9 /* Info.plist */,
 				5028E951221703E00041FA2B /* YTDownloader-Bridging-Header.h */,
+				5045A04821F331CB009234E9 /* Info.plist */,
 				508659DB221882C900E5A2A1 /* Licenses.plist */,
+				509E6B6022201EF600910337 /* GoogleService-Info.plist */,
 			);
 			path = YTDownloader;
 			sourceTree = "<group>";
@@ -214,6 +243,21 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		504A797E223188A200D6361B /* DaiYoutubeParser */ = {
+			isa = PBXGroup;
+			children = (
+				504A797F223188A200D6361B /* DaiYoutubeParser.h */,
+				504A7980223188A200D6361B /* DaiYoutubeParserWebView.m */,
+				504A7981223188A200D6361B /* DaiYoutubeParserOperation.h */,
+				504A7982223188A200D6361B /* DaiYoutubeParserDefine.h */,
+				504A7983223188A200D6361B /* DaiYoutubeParser.m */,
+				504A7984223188A200D6361B /* YoutubeParserBridge.html */,
+				504A7985223188A200D6361B /* DaiYoutubeParserWebView.h */,
+				504A7986223188A200D6361B /* DaiYoutubeParserOperation.m */,
+			);
+			path = DaiYoutubeParser;
+			sourceTree = "<group>";
+		};
 		509095E1220E27C200660503 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +271,7 @@
 		509095E2220E280B00660503 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				504A797E223188A200D6361B /* DaiYoutubeParser */,
 				5045A09321F34BDC009234E9 /* Source */,
 				5028E95522170E150041FA2B /* BHConverting.swift */,
 				5028E957221711690041FA2B /* BHConvertingObjc.h */,
@@ -237,6 +282,7 @@
 				508A762C221DBC5500F87F6F /* UIButton+BHExtension.swift */,
 				508A762D221DBC5500F87F6F /* UIImageView+BHExtension.swift */,
 				508A762E221DBC5500F87F6F /* UIView+BHExtension.swift */,
+				50508401221F2B3D00A1879E /* checkInternet.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -281,7 +327,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = BandarHelal;
 				TargetAttributes = {
 					5045A03821F331C8009234E9 = {
@@ -369,6 +415,8 @@
 			files = (
 				5045A04721F331CB009234E9 /* LaunchScreen.storyboard in Resources */,
 				5045A04421F331CB009234E9 /* Assets.xcassets in Resources */,
+				504A7989223188A200D6361B /* YoutubeParserBridge.html in Resources */,
+				509E6B6122201EF600910337 /* GoogleService-Info.plist in Resources */,
 				508659DC221882C900E5A2A1 /* Licenses.plist in Resources */,
 				5045A04221F331C8009234E9 /* Main.storyboard in Resources */,
 			);
@@ -383,22 +431,26 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-YTDownloader/Pods-YTDownloader-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-YTDownloader/Pods-YTDownloader-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/FCFileManager/FCFileManager.framework",
 				"${BUILT_PRODUCTS_DIR}/FRPreferences/FRPreferences.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/SUBLicenseViewController/SUBLicenseViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FCFileManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FRPreferences.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SUBLicenseViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YTDownloader/Pods-YTDownloader-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YTDownloader/Pods-YTDownloader-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		93F2E39A94F41898B79C52BD /* [CP] Check Pods Manifest.lock */ = {
@@ -441,12 +493,16 @@
 				5045A0A921F34BDC009234E9 /* Video.swift in Sources */,
 				5045A0AA21F34BDC009234E9 /* IResponseParser.swift in Sources */,
 				508A5754221C68A400F87F6F /* SDAVAssetExportSession.m in Sources */,
+				504A7987223188A200D6361B /* DaiYoutubeParserWebView.m in Sources */,
 				5045A0AC21F34BDC009234E9 /* YTB.swift in Sources */,
 				508A7630221DBC5500F87F6F /* UIImageView+BHExtension.swift in Sources */,
 				5045A0A621F34BDC009234E9 /* HTTPTransport.swift in Sources */,
+				504A7988223188A200D6361B /* DaiYoutubeParser.m in Sources */,
 				508D21952209F753001643E6 /* DocumentsViewController.swift in Sources */,
+				504A798A223188A200D6361B /* DaiYoutubeParserOperation.m in Sources */,
 				508A7546221C7C0F00F87F6F /* BHAlertView.swift in Sources */,
 				5045A03D21F331C8009234E9 /* AppDelegate.swift in Sources */,
+				50508402221F2B3D00A1879E /* checkInternet.swift in Sources */,
 				508A7631221DBC5500F87F6F /* UIView+BHExtension.swift in Sources */,
 				5028E959221711690041FA2B /* BHConvertingObjc.m in Sources */,
 			);
@@ -478,6 +534,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -539,6 +596,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

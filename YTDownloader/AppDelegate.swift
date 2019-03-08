@@ -9,6 +9,7 @@
 import UIKit
 import AVKit
 import AVFoundation
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        
+        FirebaseApp.configure()
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-2502501640180711~2738164978")
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .defaultToSpeaker)
         } catch {

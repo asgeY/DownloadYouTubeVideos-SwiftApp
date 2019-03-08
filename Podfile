@@ -10,4 +10,6 @@ pod 'Alamofire'
 pod 'FCFileManager'
 pod 'FRPreferences', :git => 'https://github.com/FouadRaheb/FRPreferences'
 pod 'SUBLicenseViewController'
+pod 'Firebase/Core'
+pod 'Firebase/AdMob'
 end

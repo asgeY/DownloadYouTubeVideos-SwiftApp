@@ -14,17 +14,60 @@ import Alamofire
 import MediaPlayer
 import FCFileManager
 import Photos
-import CoreVideo
+import GoogleMobileAds
 
 class ViewController: UIViewController {
-     let engine = YTB()
+    let engine = YTB()
     @IBOutlet weak var Progress            : UIProgressView!
     @IBOutlet weak var VideoURLTextField   : UITextField!
     @IBOutlet weak var DownloadVideoButton : BHButtonView!
+    let BHObj = BHConvertingObjc()
+    var bannerView: GADBannerView!
+    var interstitial: GADInterstitial!
     let ExAlert = BHAlert()
+    let FormatMP4  = "mp4"
+    let FormatWEB  = "webm"
+    let Format3GPP = "3gpp"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+        bannerView.adUnitID = "ca-app-pub-2502501640180711/8760771556"
+        bannerView.rootViewController = self
+        bannerView.delegate = self
+        bannerView.load(GADRequest())
+        
+        interstitial = GADInterstitial(adUnitID: "ca-app-pub-2502501640180711/2505019237")
+        interstitial.load(GADRequest())
+        interstitial.delegate = self
+        
+        
+        addBannerViewToView(bannerView)
+        SetupToolBar()
+    }
+    
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        view.addConstraints(
+            [NSLayoutConstraint(item: bannerView,
+                                attribute: .bottom,
+                                relatedBy: .equal,
+                                toItem: bottomLayoutGuide,
+                                attribute: .top,
+                                multiplier: 1,
+                                constant: 0),
+             NSLayoutConstraint(item: bannerView,
+                                attribute: .centerX,
+                                relatedBy: .equal,
+                                toItem: view,
+                                attribute: .centerX,
+                                multiplier: 1,
+                                constant: 0)
+            ])
+    }
+    
+    fileprivate func SetupToolBar() {
         let TextFieldToolBar = UIToolbar()
         TextFieldToolBar.sizeToFit()
         
@@ -32,7 +75,6 @@ class ViewController: UIViewController {
         TextFieldToolBar.setItems([CloseTextFieldButton], animated: true)
         
         VideoURLTextField.inputAccessoryView = TextFieldToolBar
-        
     }
     
     @objc func closeTextField() {
@@ -40,173 +82,211 @@ class ViewController: UIViewController {
     }
     
     @IBAction func DownloadVideoAction() {
-        engine.getYoutubeVideo(withVideoUrlString: self.VideoURLTextField.text!) { (result) in
-            result.ifSuccess({ (video) in
-                
-                
-                print(video)
-                let FormatMP4  = "mp4"
-                let FormatWEB  = "webm"
-                let Format3GPP = "3gpp"
-                
-                
-                let DownloadAlertSheet = UIAlertController(title: "hi", message: "Select video quality", preferredStyle: .actionSheet)
-                
-                if video.links.count == 1 {
-                    
-                    if video.links[0].quality == .hd {
-                        print("HD:", video.links)
+        
+        if Reachability.isConnectedToNetwork() {
+            print("Internet Connection Available!")
+            
+            self.interstitial.present(fromRootViewController: self)
+            
+            if self.VideoURLTextField.text!.lowercased().contains("youtu.be") {
+                engine.getYoutubeVideo(withVideoUrlString: self.VideoURLTextField.text!) { (result) in
+                    result.ifSuccess({ (video) in
                         
-                        let HDAction = UIAlertAction(title: "HD", style: .default, handler: { (action) in
-                            if "\(video.links[0].url)".contains(FormatMP4) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatMP4)
-                            } else if "\(video.links[0].url)".contains(FormatWEB) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatWEB)
-                            } else if "\(video.links[0].url)".contains(Format3GPP) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: Format3GPP)
+                        print(video)
+                        
+                        
+                        let DownloadAlertSheet = UIAlertController(title: "hi", message: video.title, preferredStyle: .actionSheet)
+                        
+                        if video.links.count == 1 {
+                            
+                            if video.links[0].quality == .hd {
+                                print("HD:", video.links)
+                                
+                                let HDAction = UIAlertAction(title: "HD", style: .default, handler: { (action) in
+                                    if "\(video.links[0].url)".contains(self.FormatMP4) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatMP4)
+                                    } else if "\(video.links[0].url)".contains(self.FormatWEB) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatWEB)
+                                    } else if "\(video.links[0].url)".contains(self.Format3GPP) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.Format3GPP)
+                                    }
+                                })
+                                
+                                let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                                
+                                DownloadAlertSheet.addAction(HDAction)
+                                DownloadAlertSheet.addAction(Cancel)
+                                
+                                self.present(DownloadAlertSheet, animated: true, completion: nil)
+                                
+                            } else if video.links[0].quality == .medium {
+                                print("Medium:", video.links)
+                                
+                                let MediumAction = UIAlertAction(title: "Medium", style: .default, handler: { (action) in
+                                    if "\(video.links[0].url)".contains(self.FormatMP4) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatMP4)
+                                    } else if "\(video.links[0].url)".contains(self.FormatWEB) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatWEB)
+                                    } else if "\(video.links[0].url)".contains(self.Format3GPP) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.Format3GPP)
+                                    }
+                                })
+                                
+                                let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                                
+                                DownloadAlertSheet.addAction(MediumAction)
+                                DownloadAlertSheet.addAction(Cancel)
+                                
+                                self.present(DownloadAlertSheet, animated: true, completion: nil)
+                                
+                                
+                            } else if video.links[0].quality == .small {
+                                print("Small:", video.links)
+                                
+                                let SmallAction = UIAlertAction(title: "Small", style: .default, handler: { (action) in
+                                    if "\(video.links[0].url)".contains(self.FormatMP4) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatMP4)
+                                    } else if "\(video.links[0].url)".contains(self.FormatWEB) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatWEB)
+                                    } else if "\(video.links[0].url)".contains(self.Format3GPP) {
+                                        self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.Format3GPP)
+                                    }
+                                })
+                                
+                                let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                                
+                                DownloadAlertSheet.addAction(SmallAction)
+                                DownloadAlertSheet.addAction(Cancel)
+                                
+                                self.present(DownloadAlertSheet, animated: true, completion: nil)
                             }
-                        })
+                            
+                        } else  if video.links.count == 2 {
+                            print("count 2:", video.links)
+                            
+                            let HDAction = UIAlertAction(title: "HD", style: .default, handler: { (action) in
+                                if "\(video.links[0].url)".contains(self.FormatMP4) {
+                                    self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatMP4)
+                                } else if "\(video.links[0].url)".contains(self.FormatWEB) {
+                                    self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatWEB)
+                                } else if "\(video.links[0].url)".contains(self.Format3GPP) {
+                                    self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.Format3GPP)
+                                }
+                            })
+                            
+                            let MediumAction = UIAlertAction(title: "Medium", style: .default, handler: { (action) in
+                                if "\(video.links[1].url)".contains(self.FormatMP4) {
+                                    self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: self.FormatMP4)
+                                } else if "\(video.links[1].url)".contains(self.FormatWEB) {
+                                    self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: self.FormatWEB)
+                                } else if "\(video.links[1].url)".contains(self.Format3GPP) {
+                                    self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: self.Format3GPP)
+                                }
+                            })
+                            
+                            let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                            
+                            DownloadAlertSheet.addAction(HDAction)
+                            DownloadAlertSheet.addAction(MediumAction)
+                            DownloadAlertSheet.addAction(Cancel)
+                            
+                            self.present(DownloadAlertSheet, animated: true, completion: nil)
+                            
+                            
+                        } else if video.links.count == 3 {
+                            print("count 3:",video.links)
+                            
+                            let HDAction = UIAlertAction(title: "HD", style: .default, handler: { (action) in
+                                if "\(video.links[0].url)".contains(self.FormatMP4) {
+                                    self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatMP4)
+                                } else if "\(video.links[0].url)".contains(self.FormatWEB) {
+                                    self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.FormatWEB)
+                                } else if "\(video.links[0].url)".contains(self.Format3GPP) {
+                                    self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: self.Format3GPP)
+                                }
+                            })
+                            
+                            let MediumAction = UIAlertAction(title: "Medium", style: .default, handler: { (action) in
+                                if "\(video.links[1].url)".contains(self.FormatMP4) {
+                                    self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: self.FormatMP4)
+                                } else if "\(video.links[1].url)".contains(self.FormatWEB) {
+                                    self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: self.FormatWEB)
+                                } else if "\(video.links[1].url)".contains(self.Format3GPP) {
+                                    self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: self.Format3GPP)
+                                }
+                            })
+                            
+                            let SmallAction = UIAlertAction(title: "Small", style: .default, handler: { (action) in
+                                if "\(video.links[2].url)".contains(self.FormatMP4) {
+                                    self.download(VideoURL: video.links[2].url, VideoTitle: video.title, format: self.FormatMP4)
+                                } else if "\(video.links[2].url)".contains(self.FormatWEB) {
+                                    self.download(VideoURL: video.links[2].url, VideoTitle: video.title, format: self.FormatWEB)
+                                } else if "\(video.links[2].url)".contains(self.Format3GPP) {
+                                    self.download(VideoURL: video.links[2].url, VideoTitle: video.title, format: self.Format3GPP)
+                                }
+                            })
+                            
+                            let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                            
+                            DownloadAlertSheet.addAction(HDAction)
+                            DownloadAlertSheet.addAction(MediumAction)
+                            DownloadAlertSheet.addAction(SmallAction)
+                            DownloadAlertSheet.addAction(Cancel)
+                            
+                            self.present(DownloadAlertSheet, animated: true, completion: nil)
+                            
+                        } else {
+                            print(video.links)
+                        }
                         
-                        let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    }).ifError({ (error) in
                         
-                        DownloadAlertSheet.addAction(HDAction)
-                        DownloadAlertSheet.addAction(Cancel)
-                        
-                        self.present(DownloadAlertSheet, animated: true, completion: nil)
-                        
-                    } else if video.links[0].quality == .medium {
-                        print("Medium:", video.links)
-                        
-                        let MediumAction = UIAlertAction(title: "Medium", style: .default, handler: { (action) in
-                            if "\(video.links[0].url)".contains(FormatMP4) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatMP4)
-                            } else if "\(video.links[0].url)".contains(FormatWEB) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatWEB)
-                            } else if "\(video.links[0].url)".contains(Format3GPP) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: Format3GPP)
-                            }
-                        })
-                        
-                        let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                        
-                        DownloadAlertSheet.addAction(MediumAction)
-                        DownloadAlertSheet.addAction(Cancel)
-                        
-                        self.present(DownloadAlertSheet, animated: true, completion: nil)
-                        
-                        
-                    } else if video.links[0].quality == .small {
-                        print("Small:", video.links)
-                        
-                        let SmallAction = UIAlertAction(title: "Small", style: .default, handler: { (action) in
-                            if "\(video.links[0].url)".contains(FormatMP4) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatMP4)
-                            } else if "\(video.links[0].url)".contains(FormatWEB) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatWEB)
-                            } else if "\(video.links[0].url)".contains(Format3GPP) {
-                                self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: Format3GPP)
-                            }
-                        })
-                        
-                        let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                        
-                        DownloadAlertSheet.addAction(SmallAction)
-                        DownloadAlertSheet.addAction(Cancel)
-                        
-                        self.present(DownloadAlertSheet, animated: true, completion: nil)
-                    }
-                    
-                } else  if video.links.count == 2 {
-                    print("count 2:", video.links)
-                    
-                    let HDAction = UIAlertAction(title: "HD", style: .default, handler: { (action) in
-                        if "\(video.links[0].url)".contains(FormatMP4) {
-                            self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatMP4)
-                        } else if "\(video.links[0].url)".contains(FormatWEB) {
-                            self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatWEB)
-                        } else if "\(video.links[0].url)".contains(Format3GPP) {
-                            self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: Format3GPP)
+                        do {
+                            let regex = try NSRegularExpression(pattern: .youtubeVideoIdRegex)
+                            let matches = regex.matches(in: self.VideoURLTextField.text!,
+                                                        range: NSRange(location: 0, length: self.VideoURLTextField.text!.count))
+                            
+                            print(matches.compactMap({ (self.VideoURLTextField.text! as NSString).substring(with: $0.range)
+                            }).first!)
+                            
+                            DaiYoutubeParser.parse(matches.compactMap({ (self.VideoURLTextField.text! as NSString).substring(with: $0.range)
+                            }).first!, screenSize: CGSize.zero, videoQuality: DaiYoutubeParserQualityHighres, completion: { (status, url, videoTitle, VideoDur) in
+                                
+                                
+                                if status == DaiYoutubeParserStatusSuccess {
+                                    if url!.contains(self.FormatMP4) {
+                                        self.download(VideoURL: URL(string: url!)!, VideoTitle: videoTitle!, format: self.FormatMP4)
+                                    } else if url!.contains(self.FormatWEB) {
+                                        self.download(VideoURL: URL(string: url!)!, VideoTitle: videoTitle!, format: self.FormatWEB)
+                                    } else if url!.contains(self.Format3GPP) {
+                                        self.download(VideoURL: URL(string: url!)!, VideoTitle: videoTitle!, format: self.Format3GPP)
+                                    }
+                                } else {
+                                    self.ExAlert.ShowBHAlertController(Title: "hi", message: "something wrong :)", TitleButton: "ok", Target: self)
+                                }
+                            })
+                        } catch {
+                            print(error)
                         }
                     })
-                    
-                    let MediumAction = UIAlertAction(title: "Medium", style: .default, handler: { (action) in
-                        if "\(video.links[1].url)".contains(FormatMP4) {
-                            self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: FormatMP4)
-                        } else if "\(video.links[1].url)".contains(FormatWEB) {
-                            self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: FormatWEB)
-                        } else if "\(video.links[1].url)".contains(Format3GPP) {
-                            self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: Format3GPP)
-                        }
-                    })
-                    
-                    let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                    
-                    DownloadAlertSheet.addAction(HDAction)
-                    DownloadAlertSheet.addAction(MediumAction)
-                    DownloadAlertSheet.addAction(Cancel)
-                    
-                    self.present(DownloadAlertSheet, animated: true, completion: nil)
-                    
-                    
-                } else if video.links.count == 3 {
-                    print("count 3:",video.links)
-                    
-                    let HDAction = UIAlertAction(title: "HD", style: .default, handler: { (action) in
-                        if "\(video.links[0].url)".contains(FormatMP4) {
-                            self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatMP4)
-                        } else if "\(video.links[0].url)".contains(FormatWEB) {
-                            self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: FormatWEB)
-                        } else if "\(video.links[0].url)".contains(Format3GPP) {
-                            self.download(VideoURL: video.links[0].url, VideoTitle: video.title, format: Format3GPP)
-                        }
-                    })
-                    
-                    let MediumAction = UIAlertAction(title: "Medium", style: .default, handler: { (action) in
-                        if "\(video.links[1].url)".contains(FormatMP4) {
-                            self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: FormatMP4)
-                        } else if "\(video.links[1].url)".contains(FormatWEB) {
-                            self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: FormatWEB)
-                        } else if "\(video.links[1].url)".contains(Format3GPP) {
-                            self.download(VideoURL: video.links[1].url, VideoTitle: video.title, format: Format3GPP)
-                        }
-                    })
-                    
-                    let SmallAction = UIAlertAction(title: "Small", style: .default, handler: { (action) in
-                        if "\(video.links[2].url)".contains(FormatMP4) {
-                            self.download(VideoURL: video.links[2].url, VideoTitle: video.title, format: FormatMP4)
-                        } else if "\(video.links[2].url)".contains(FormatWEB) {
-                            self.download(VideoURL: video.links[2].url, VideoTitle: video.title, format: FormatWEB)
-                        } else if "\(video.links[2].url)".contains(Format3GPP) {
-                            self.download(VideoURL: video.links[2].url, VideoTitle: video.title, format: Format3GPP)
-                        }
-                    })
-                    
-                    let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                    
-                    DownloadAlertSheet.addAction(HDAction)
-                    DownloadAlertSheet.addAction(MediumAction)
-                    DownloadAlertSheet.addAction(SmallAction)
-                    DownloadAlertSheet.addAction(Cancel)
-                    
-                    self.present(DownloadAlertSheet, animated: true, completion: nil)
-                    
-                } else {
-                    print(video.links)
                 }
-                
-            }).ifError({ (error) in
-                print(error.localizedDescription)
-                self.ExAlert.ShowBHAlertController(Title: "hi", message: "Check the video URL and try agine: \(error.localizedDescription)", TitleButton: "ok", Target: self)
-            })
+            } else {
+                self.ExAlert.ShowBHAlertController(Title: "hi", message: "Text Field is empty \n صاحي انت؟ منت حاط رابط فيديو وتضغط زر التحميل", TitleButton: "ok", Target: self)
+            }
+        } else {
+            print("Internet Connection not Available!")
+            self.ExAlert.ShowBHAlertController(Title: "hi", message: "Please check your internet connection \n ياليل مافي فايدة مافي فايدة رح شغل الانترنت", TitleButton: "ok", Target: self)
         }
     }
     
     func download(VideoURL: URL, VideoTitle: String, format: String) {
+        
         let destination = DownloadRequest.suggestedDownloadDestination(for: .documentDirectory)
         Alamofire.download(VideoURL, to: destination).response {
             response in
             //print(response.destinationURL!)
             FCFileManager.renameItem(atPath: response.destinationURL!.lastPathComponent, withName: "\(VideoTitle).\(format)")
+            self.ExAlert.ShowBHAlertController(Title: "hi", message: "Succeeded download video 🎉", TitleButton: "ok", Target: self)
             self.Progress.setProgress(0, animated: true)
             
             }.downloadProgress { (Progress) in
@@ -215,4 +295,76 @@ class ViewController: UIViewController {
                 self.Progress.setProgress(ProgressFloat, animated: true)
         }
     }
+}
+
+extension ViewController: GADBannerViewDelegate {
+    /// Tells the delegate an ad request loaded an ad.
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("adViewDidReceiveAd")
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func adView(_ bannerView: GADBannerView,
+                didFailToReceiveAdWithError error: GADRequestError) {
+        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    /// Tells the delegate that a full-screen view will be presented in response
+    /// to the user clicking on an ad.
+    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("adViewWillPresentScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view will be dismissed.
+    func adViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewWillDismissScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view has been dismissed.
+    func adViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewDidDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app (such as
+    /// the App Store), backgrounding the current app.
+    func adViewWillLeaveApplication(_ bannerView: GADBannerView) {
+        print("adViewWillLeaveApplication")
+    }
+    
+}
+extension ViewController: GADInterstitialDelegate {
+    /// Tells the delegate an ad request succeeded.
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        print("interstitialDidReceiveAd")
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+        print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    /// Tells the delegate that an interstitial will be presented.
+    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+        print("interstitialWillPresentScreen")
+    }
+    
+    /// Tells the delegate the interstitial is to be animated off the screen.
+    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialWillDismissScreen")
+    }
+    
+    /// Tells the delegate the interstitial had been animated off the screen.
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialDidDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app
+    /// (such as the App Store), backgrounding the current app.
+    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
+        print("interstitialWillLeaveApplication")
+    }
+}
+
+private extension String {
+    static let youtubeVideoIdRegex = "((?<=(v|V)/)|(?<=be/)|(?<=(\\?|\\&)v=)|(?<=embed/))([\\w-]++)"
 }
