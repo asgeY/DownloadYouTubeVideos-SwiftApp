@@ -31,6 +31,6 @@ public extension YTBExtension where Target == String {
     }
 }
 
-private extension String {
+extension String {
     static let youtubeVideoIdRegex = "((?<=(v|V)/)|(?<=be/)|(?<=(\\?|\\&)v=)|(?<=embed/))([\\w-]++)"
 }

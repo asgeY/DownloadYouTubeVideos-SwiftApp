@@ -11,5 +11,6 @@ pod 'FCFileManager'
 pod 'FRPreferences', :git => 'https://github.com/FouadRaheb/FRPreferences'
 pod 'SUBLicenseViewController'
 pod 'Firebase/Core'
+pod 'KRProgressHUD'
 pod 'Firebase/AdMob'
 end

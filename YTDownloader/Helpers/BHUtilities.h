@@ -10,9 +10,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
 
-@interface BHConvertingObjc : NSObject
-- (void)ConvertVideoToAudio:(NSURL *)VideoURLPath DocumentsPath:(NSURL *)destination;
-- (void)exportVideoWithAsset:(AVAsset *)VideoAsset DocumentsPath:(NSURL *)destination;
+@interface BHUtilities : NSObject
+- (void)ConvertVideoToAudio:(NSURL *)VideoURLPath DocumentsPath:(NSURL *)destination CompletionHandler:(void (^)(void))handler;
 - (CGImageRef)GetFrameGrap:(AVAsset *)AssetVideo;
 - (void)exportAsynchronouslyWithAVAsset:(AVAsset *)asset DocumentsPath:(NSURL *)destination;
 @end

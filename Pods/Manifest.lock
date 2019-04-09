@@ -50,6 +50,9 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (5.3.7):
     - GoogleUtilities/Logger
+  - KRActivityIndicatorView (3.0.0)
+  - KRProgressHUD (3.4.0):
+    - KRActivityIndicatorView (= 3.0.0)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
@@ -63,6 +66,7 @@ DEPENDENCIES:
   - Firebase/AdMob
   - Firebase/Core
   - FRPreferences (from `https://github.com/FouadRaheb/FRPreferences`)
+  - KRProgressHUD
   - SUBLicenseViewController
 
 SPEC REPOS:
@@ -76,6 +80,8 @@ SPEC REPOS:
     - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleUtilities
+    - KRActivityIndicatorView
+    - KRProgressHUD
     - nanopb
     - SUBLicenseViewController
 
@@ -99,9 +105,11 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: d0f10a7c4d7015db23075ff316602350d12049db
   GoogleAppMeasurement: 621f3bc6211d5ba548debe01fafad30cf5ab6859
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
+  KRActivityIndicatorView: c414000730a6f4969eeb354bee4f2aebc89c2c2e
+  KRProgressHUD: 79c8703f82179fe34b3602f10b30726f887983fa
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   SUBLicenseViewController: 7903a314448eeae9cf8e33127bad2019f7cb11d5
 
-PODFILE CHECKSUM: 07011c1ea0f423a4e22e8a0edefef8cf08062cfd
+PODFILE CHECKSUM: 0bb499e13675132a8503d565c3d831a9255cc68f
 
 COCOAPODS: 1.6.0

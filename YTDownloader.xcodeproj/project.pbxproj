@@ -8,9 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		011530B7548D130A550452F1 /* Pods_YTDownloader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9A670C6B315E9CEF052E644 /* Pods_YTDownloader.framework */; };
+		50040717224655EE00061D13 /* KRActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50040716224655EE00061D13 /* KRActivityIndicatorView.framework */; };
+		50040719224655EE00061D13 /* KRProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50040718224655EE00061D13 /* KRProgressHUD.framework */; };
+		5007FBF12253CF5A003C5DCF /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5007FBF02253CF59003C5DCF /* FolderViewController.swift */; };
+		5007FBF32253CF77003C5DCF /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5007FBF22253CF77003C5DCF /* FolderTableViewCell.swift */; };
 		50250CB62201F117004D8939 /* FCFileManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50250CB52201F117004D8939 /* FCFileManager.framework */; };
 		5028E95622170E150041FA2B /* BHConverting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5028E95522170E150041FA2B /* BHConverting.swift */; };
-		5028E959221711690041FA2B /* BHConvertingObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5028E958221711690041FA2B /* BHConvertingObjc.m */; };
 		5045A03D21F331C8009234E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5045A03C21F331C8009234E9 /* AppDelegate.swift */; };
 		5045A03F21F331C8009234E9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5045A03E21F331C8009234E9 /* ViewController.swift */; };
 		5045A04221F331C8009234E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5045A04021F331C8009234E9 /* Main.storyboard */; };
@@ -32,6 +35,8 @@
 		504A7988223188A200D6361B /* DaiYoutubeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 504A7983223188A200D6361B /* DaiYoutubeParser.m */; };
 		504A7989223188A200D6361B /* YoutubeParserBridge.html in Resources */ = {isa = PBXBuildFile; fileRef = 504A7984223188A200D6361B /* YoutubeParserBridge.html */; };
 		504A798A223188A200D6361B /* DaiYoutubeParserOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 504A7986223188A200D6361B /* DaiYoutubeParserOperation.m */; };
+		504FF06022562A4600E6DD1D /* MoveFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504FF05F22562A4600E6DD1D /* MoveFilesViewController.swift */; };
+		504FF06222562A6500E6DD1D /* MoveFilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504FF06122562A6500E6DD1D /* MoveFilesTableViewCell.swift */; };
 		50508402221F2B3D00A1879E /* checkInternet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50508401221F2B3D00A1879E /* checkInternet.swift */; };
 		50526AC121FC48AE003D8B13 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50526AC021FC48AE003D8B13 /* Alamofire.framework */; };
 		508659D822187A7000E5A2A1 /* FRPreferences.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 508659D722187A7000E5A2A1 /* FRPreferences.framework */; };
@@ -48,15 +53,18 @@
 		508D21912209F6E5001643E6 /* DocumentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D21902209F6E5001643E6 /* DocumentsTableViewCell.swift */; };
 		508D21952209F753001643E6 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D21942209F753001643E6 /* DocumentsViewController.swift */; };
 		509E6B6122201EF600910337 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 509E6B6022201EF600910337 /* GoogleService-Info.plist */; };
+		50DF274C225D140700A9AC73 /* BHUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 50DF274B225D140700A9AC73 /* BHUtilities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		298771C76EB6F37A37EB79B8 /* Pods-GetProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-GetProject/Pods-GetProject.release.xcconfig"; sourceTree = "<group>"; };
+		50040716224655EE00061D13 /* KRActivityIndicatorView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KRActivityIndicatorView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		50040718224655EE00061D13 /* KRProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KRProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5007FBF02253CF59003C5DCF /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
+		5007FBF22253CF77003C5DCF /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTableViewCell.swift; sourceTree = "<group>"; };
 		50250CB52201F117004D8939 /* FCFileManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FCFileManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5028E951221703E00041FA2B /* YTDownloader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YTDownloader-Bridging-Header.h"; sourceTree = "<group>"; };
 		5028E95522170E150041FA2B /* BHConverting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BHConverting.swift; sourceTree = "<group>"; };
-		5028E957221711690041FA2B /* BHConvertingObjc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BHConvertingObjc.h; sourceTree = "<group>"; };
-		5028E958221711690041FA2B /* BHConvertingObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BHConvertingObjc.m; sourceTree = "<group>"; };
 		5045A03921F331C8009234E9 /* YTDownloader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YTDownloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5045A03C21F331C8009234E9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5045A03E21F331C8009234E9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -84,8 +92,12 @@
 		504A7984223188A200D6361B /* YoutubeParserBridge.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YoutubeParserBridge.html; sourceTree = "<group>"; };
 		504A7985223188A200D6361B /* DaiYoutubeParserWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaiYoutubeParserWebView.h; sourceTree = "<group>"; };
 		504A7986223188A200D6361B /* DaiYoutubeParserOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaiYoutubeParserOperation.m; sourceTree = "<group>"; };
+		504FF05F22562A4600E6DD1D /* MoveFilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesViewController.swift; sourceTree = "<group>"; };
+		504FF06122562A6500E6DD1D /* MoveFilesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesTableViewCell.swift; sourceTree = "<group>"; };
 		50508401221F2B3D00A1879E /* checkInternet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = checkInternet.swift; sourceTree = "<group>"; };
 		50526AC021FC48AE003D8B13 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		507B61C9223D5961009D6731 /* PhotoLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PhotoLibrary.framework; sourceTree = "<group>"; };
+		507B61CB223D5BA3009D6731 /* PhotoLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotoLibrary.framework; path = "../../../Documents/iOS-Runtime-Headers-master/PrivateFrameworks/PhotoLibrary.framework"; sourceTree = "<group>"; };
 		508659D722187A7000E5A2A1 /* FRPreferences.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FRPreferences.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508659D92218828400E5A2A1 /* SUBLicenseViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SUBLicenseViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		508659DB221882C900E5A2A1 /* Licenses.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Licenses.plist; sourceTree = "<group>"; };
@@ -101,6 +113,9 @@
 		508D21902209F6E5001643E6 /* DocumentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsTableViewCell.swift; sourceTree = "<group>"; };
 		508D21942209F753001643E6 /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		509E6B6022201EF600910337 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		50DF2748225D123600A9AC73 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		50DF274A225D140700A9AC73 /* BHUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BHUtilities.h; sourceTree = "<group>"; };
+		50DF274B225D140700A9AC73 /* BHUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BHUtilities.m; sourceTree = "<group>"; };
 		5F95203C28D879333223B2F4 /* Pods-YTDownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTDownloader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YTDownloader/Pods-YTDownloader.debug.xcconfig"; sourceTree = "<group>"; };
 		A07AC201673523504AFF1323 /* Pods-YTDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTDownloader.release.xcconfig"; path = "Pods/Target Support Files/Pods-YTDownloader/Pods-YTDownloader.release.xcconfig"; sourceTree = "<group>"; };
 		A7F44D2B06EB972B5D631C8E /* Pods-GetProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GetProject/Pods-GetProject.debug.xcconfig"; sourceTree = "<group>"; };
@@ -112,6 +127,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50040717224655EE00061D13 /* KRActivityIndicatorView.framework in Frameworks */,
+				50040719224655EE00061D13 /* KRProgressHUD.framework in Frameworks */,
 				508A7637221DFE7300F87F6F /* FirebaseCore.framework in Frameworks */,
 				508A7639221DFE7300F87F6F /* GoogleUtilities.framework in Frameworks */,
 				508A763B221DFE7300F87F6F /* nanopb.framework in Frameworks */,
@@ -129,6 +146,11 @@
 		4673CB7CF4EC5D43E68B8FAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				50DF2748225D123600A9AC73 /* UIKit.framework */,
+				50040716224655EE00061D13 /* KRActivityIndicatorView.framework */,
+				50040718224655EE00061D13 /* KRProgressHUD.framework */,
+				507B61C9223D5961009D6731 /* PhotoLibrary.framework */,
+				507B61CB223D5BA3009D6731 /* PhotoLibrary.framework */,
 				508A7636221DFE7300F87F6F /* FirebaseCore.framework */,
 				508A7638221DFE7300F87F6F /* GoogleUtilities.framework */,
 				508A763A221DFE7300F87F6F /* nanopb.framework */,
@@ -264,6 +286,10 @@
 				5045A03E21F331C8009234E9 /* ViewController.swift */,
 				508D21902209F6E5001643E6 /* DocumentsTableViewCell.swift */,
 				508D21942209F753001643E6 /* DocumentsViewController.swift */,
+				5007FBF02253CF59003C5DCF /* FolderViewController.swift */,
+				5007FBF22253CF77003C5DCF /* FolderTableViewCell.swift */,
+				504FF05F22562A4600E6DD1D /* MoveFilesViewController.swift */,
+				504FF06122562A6500E6DD1D /* MoveFilesTableViewCell.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -274,8 +300,8 @@
 				504A797E223188A200D6361B /* DaiYoutubeParser */,
 				5045A09321F34BDC009234E9 /* Source */,
 				5028E95522170E150041FA2B /* BHConverting.swift */,
-				5028E957221711690041FA2B /* BHConvertingObjc.h */,
-				5028E958221711690041FA2B /* BHConvertingObjc.m */,
+				50DF274A225D140700A9AC73 /* BHUtilities.h */,
+				50DF274B225D140700A9AC73 /* BHUtilities.m */,
 				508A5752221C688000F87F6F /* SDAVAssetExportSession.h */,
 				508A5753221C68A400F87F6F /* SDAVAssetExportSession.m */,
 				508A7545221C7C0F00F87F6F /* BHAlertView.swift */,
@@ -436,6 +462,8 @@
 				"${BUILT_PRODUCTS_DIR}/FCFileManager/FCFileManager.framework",
 				"${BUILT_PRODUCTS_DIR}/FRPreferences/FRPreferences.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/KRActivityIndicatorView/KRActivityIndicatorView.framework",
+				"${BUILT_PRODUCTS_DIR}/KRProgressHUD/KRProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SUBLicenseViewController/SUBLicenseViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -445,6 +473,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FCFileManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FRPreferences.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRActivityIndicatorView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SUBLicenseViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -484,8 +514,10 @@
 				5045A0AF21F34BDC009234E9 /* String+YouTube.swift in Sources */,
 				508A762F221DBC5500F87F6F /* UIButton+BHExtension.swift in Sources */,
 				5045A0AD21F34BDC009234E9 /* RequestBuilder.swift in Sources */,
+				5007FBF32253CF77003C5DCF /* FolderTableViewCell.swift in Sources */,
 				5045A03F21F331C8009234E9 /* ViewController.swift in Sources */,
 				5045A0A721F34BDC009234E9 /* IHTTPTransport.swift in Sources */,
+				504FF06222562A6500E6DD1D /* MoveFilesTableViewCell.swift in Sources */,
 				5045A0AB21F34BDC009234E9 /* ResponseParser.swift in Sources */,
 				5028E95622170E150041FA2B /* BHConverting.swift in Sources */,
 				5045A0A821F34BDC009234E9 /* Result.swift in Sources */,
@@ -494,17 +526,19 @@
 				5045A0AA21F34BDC009234E9 /* IResponseParser.swift in Sources */,
 				508A5754221C68A400F87F6F /* SDAVAssetExportSession.m in Sources */,
 				504A7987223188A200D6361B /* DaiYoutubeParserWebView.m in Sources */,
+				50DF274C225D140700A9AC73 /* BHUtilities.m in Sources */,
 				5045A0AC21F34BDC009234E9 /* YTB.swift in Sources */,
 				508A7630221DBC5500F87F6F /* UIImageView+BHExtension.swift in Sources */,
 				5045A0A621F34BDC009234E9 /* HTTPTransport.swift in Sources */,
 				504A7988223188A200D6361B /* DaiYoutubeParser.m in Sources */,
+				504FF06022562A4600E6DD1D /* MoveFilesViewController.swift in Sources */,
 				508D21952209F753001643E6 /* DocumentsViewController.swift in Sources */,
 				504A798A223188A200D6361B /* DaiYoutubeParserOperation.m in Sources */,
 				508A7546221C7C0F00F87F6F /* BHAlertView.swift in Sources */,
 				5045A03D21F331C8009234E9 /* AppDelegate.swift in Sources */,
+				5007FBF12253CF5A003C5DCF /* FolderViewController.swift in Sources */,
 				50508402221F2B3D00A1879E /* checkInternet.swift in Sources */,
 				508A7631221DBC5500F87F6F /* UIView+BHExtension.swift in Sources */,
-				5028E959221711690041FA2B /* BHConvertingObjc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,6 +687,7 @@
 			baseConfigurationReference = 5F95203C28D879333223B2F4 /* Pods-YTDownloader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8JMV3RHX32;
@@ -663,6 +698,7 @@
 					"$(PROJECT_DIR)/YTDownloader/Helpers/vlc-ios-master/Pods/HockeySDK-tvOS/HockeySDK-tvOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/YTDownloader/Helpers/vlc-ios-master/Pods/VLCMediaLibraryKit",
 					"$(PROJECT_DIR)/YTDownloader/Helpers/vlc-ios-master/Pods/TVVLCKit",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/YTDownloader/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -684,6 +720,7 @@
 			baseConfigurationReference = A07AC201673523504AFF1323 /* Pods-YTDownloader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8JMV3RHX32;
@@ -694,6 +731,7 @@
 					"$(PROJECT_DIR)/YTDownloader/Helpers/vlc-ios-master/Pods/HockeySDK-tvOS/HockeySDK-tvOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/YTDownloader/Helpers/vlc-ios-master/Pods/VLCMediaLibraryKit",
 					"$(PROJECT_DIR)/YTDownloader/Helpers/vlc-ios-master/Pods/TVVLCKit",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/YTDownloader/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

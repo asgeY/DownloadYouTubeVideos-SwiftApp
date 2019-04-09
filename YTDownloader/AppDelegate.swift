@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         FirebaseApp.configure()
         GADMobileAds.configure(withApplicationID: "ca-app-pub-2502501640180711~2738164978")
         do {
@@ -25,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("\(error): \(error.localizedDescription)")
         }
-        
         
         return true
     }
@@ -50,6 +50,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        
+        
+        if shortcutItem.type == "com.BandarHL.YTDownloader.Share" {
+            
+            UIApplication.shared.open(URL(string: "twitter://post?message=i'm%20using%20YTDownloader%20for%20download%20youtube%20videos")!, options: [:], completionHandler: nil)
+            
+        }
     }
 
 

@@ -6,16 +6,16 @@
 //  Copyright © 2019 BandarHelal. All rights reserved.
 //
 
-#import "BHConvertingObjc.h"
+#import "BHUtilities.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
 #import "SDAVAssetExportSession.h"
 #import <Photos/Photos.h>
 
 
-@implementation BHConvertingObjc
+@implementation BHUtilities
 
-- (void)ConvertVideoToAudio:(NSURL *)VideoURLPath DocumentsPath:(NSURL *)destination {
+- (void)ConvertVideoToAudio:(NSURL *)VideoURLPath DocumentsPath:(NSURL *)destination CompletionHandler:(void (^)(void))handler {
     AVMutableComposition *newAudioAsset = [AVMutableComposition composition];
     
     AVMutableCompositionTrack *dstCompositionTrack;
@@ -50,46 +50,7 @@
             NSLog(@"FAILURE: %@\n", exportSesh.error);
         } else if (AVAssetExportSessionStatusCompleted == status) {
             NSLog(@"SUCCESS!\n");
-        }
-    }];
-}
-
-- (void)exportVideoWithAsset:(AVAsset *)VideoAsset DocumentsPath:(NSURL *)destination {
-    SDAVAssetExportSession *encoder = [SDAVAssetExportSession.alloc initWithAsset:VideoAsset];
-    encoder.outputFileType = AVFileTypeMPEG4;
-    encoder.outputURL = destination;
-    encoder.videoSettings = @
-    {
-    AVVideoCodecKey: AVVideoCodecTypeH264,
-    AVVideoWidthKey: @1920,
-    AVVideoHeightKey: @1080,
-    AVVideoCompressionPropertiesKey: @
-        {
-        AVVideoAverageBitRateKey: @6000000,
-        AVVideoProfileLevelKey: AVVideoProfileLevelH264High40,
-        },
-    };
-    encoder.audioSettings = @
-    {
-    AVFormatIDKey: @(kAudioFormatMPEG4AAC),
-    AVNumberOfChannelsKey: @2,
-    AVSampleRateKey: @44100,
-    AVEncoderBitRateKey: @128000,
-    };
-    
-    [encoder exportAsynchronouslyWithCompletionHandler:^
-    {
-        if (encoder.status == AVAssetExportSessionStatusCompleted)
-        {
-            NSLog(@"Video export succeeded");
-        }
-        else if (encoder.status == AVAssetExportSessionStatusCancelled)
-        {
-            NSLog(@"Video export cancelled");
-        }
-        else
-        {
-            NSLog(@"Video export failed with error: %@ (%d)", encoder.error.localizedDescription, encoder.error.code);
+            handler();
         }
     }];
 }
@@ -187,6 +148,93 @@
         
         NSLog(@"compatible：%@", compatibleFileTypes);
     }];
+}
+
+- (void)DownloadVideo:(AVAsset *)VideoAsset {
+    NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+    
+    SDAVAssetExportSession *encoder = [SDAVAssetExportSession.alloc initWithAsset:VideoAsset];
+    encoder.outputFileType = AVFileTypeMPEG4;
+    encoder.outputURL = documentsDirectoryURL;
+    encoder.videoSettings = @
+    {
+    AVVideoCodecKey: AVVideoCodecTypeH264,
+    AVVideoWidthKey: @1920,
+    AVVideoHeightKey: @1080,
+    AVVideoCompressionPropertiesKey: @
+        {
+        AVVideoAverageBitRateKey: @6000000,
+        AVVideoProfileLevelKey: AVVideoProfileLevelH264High40,
+        },
+    };
+    encoder.audioSettings = @
+    {
+    AVFormatIDKey: @(kAudioFormatMPEG4AAC),
+    AVNumberOfChannelsKey: @2,
+    AVSampleRateKey: @44100,
+    AVEncoderBitRateKey: @128000,
+    };
+    
+    [encoder exportAsynchronouslyWithCompletionHandler:^
+    {
+        if (encoder.status == AVAssetExportSessionStatusCompleted)
+        {
+            NSLog(@"Video export succeeded");
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:documentsDirectoryURL.absoluteURL];
+            } completionHandler:^(BOOL success, NSError * _Nullable error) {
+                
+                if (success) {
+                    NSLog(@"Success Save Video To Camera Roll");
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"hi"
+                                                                    message:@"Success save video"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                    [[NSFileManager defaultManager] removeItemAtURL:documentsDirectoryURL.absoluteURL error:nil];
+                } else {
+                    NSLog(@"ERROR Save Video To Camera Roll");
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"hi"
+                                                                    message:@"ERROR Save Video To Camera Roll"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                }
+            }];
+        }
+        else if (encoder.status == AVAssetExportSessionStatusCancelled)
+        {
+            NSLog(@"Video export cancelled");
+        }
+        else
+        {
+            NSLog(@"Video export failed with error: %@ (%ld)", encoder.error.localizedDescription, (long)encoder.error.code);
+        }
+    }];
+    
+}
+
+
+- (NSString *)bundleSeedID {
+    NSDictionary *query = [NSDictionary dictionaryWithObjectsAndKeys:
+                           (__bridge NSString *)kSecClassGenericPassword, (__bridge NSString *)kSecClass,
+                           @"bundleSeedID", kSecAttrAccount,
+                           @"", kSecAttrService,
+                           (id)kCFBooleanTrue, kSecReturnAttributes,
+                           nil];
+    CFDictionaryRef result = nil;
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
+    if (status == errSecItemNotFound)
+        status = SecItemAdd((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
+    if (status != errSecSuccess)
+        return nil;
+    NSString *accessGroup = [(__bridge NSDictionary *)result objectForKey:(__bridge NSString *)kSecAttrAccessGroup];
+    NSArray *components = [accessGroup componentsSeparatedByString:@"."];
+    NSString *bundleSeedID = [[components objectEnumerator] nextObject];
+    CFRelease(result);
+    return bundleSeedID;
 }
 
 @end

@@ -8,13 +8,11 @@
 
 import UIKit
 import MediaPlayer
-import AVFoundation
 import SUBLicenseViewController
 import FRPreferences
 import Photos
 import FCFileManager
 import GoogleMobileAds
-import LocalAuthentication
 
 class DocumentsViewController: UIViewController {
     
@@ -22,14 +20,16 @@ class DocumentsViewController: UIViewController {
     var selectedPath            : URL?
     var files                   : [URL]!
     var documentsDirectoryPath  : String?
+    var FolderNameSelected      : String?
     var bannerView              : GADBannerView!
     let infoPlistPath           = Bundle.main.infoDictionary
     var profileimage            = URL(string: "https://twitter.com/BandarHL/profile_image?size=bigger")
     var profileimage2           = URL(string: "https://twitter.com/AmeerDesgin/profile_image?size=bigger")
     let bhalert                 = BHAlert()
     let BHConvertSwift          = BHConverting()
-    let BHConvertObjC           = BHConvertingObjc()
+    let BHConvertObjC           = BHUtilities()
     var Player                  = AVPlayer()
+    
     
     @IBOutlet weak var EmptyLabel: UILabel!
     @IBOutlet weak var DocumentsTableView: UITableView!
@@ -99,9 +99,7 @@ class DocumentsViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.DocumentsTableView.reloadData()
-            self.DocumentsTableView.beginUpdates()
             self.DocumentsTableView.reloadRows(at: self.DocumentsTableView.indexPathsForVisibleRows!, with: UITableView.RowAnimation.automatic)
-            self.DocumentsTableView.endUpdates();
         }
     }
     
@@ -135,6 +133,29 @@ class DocumentsViewController: UIViewController {
         commandCenter.playCommand.isEnabled = true
         commandCenter.pauseCommand.isEnabled = true
     }
+    
+    @IBAction func AddFolderButtonBar(_ sender: Any) {
+        
+        let alertController = UIAlertController(title: "enter the folder name", message: nil, preferredStyle: .alert)
+        
+        alertController.addTextField { (TextField) in
+            print(TextField.text!)
+        }
+        
+        let CreateHandler = UIAlertAction(title: "Create folder", style: .default) { (action) in
+            
+            FCFileManager.createDirectories(forPath: alertController.textFields![0].text!)
+            self.SetupDocumentsDirectoryPath()
+        }
+        
+        let Cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        
+        alertController.addAction(CreateHandler)
+        alertController.addAction(Cancel)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+    
     
     @IBAction func ShowAppInfo(_ sender: Any) {
         let section1 = FRPSection(title: nil, footer: nil)
@@ -186,12 +207,22 @@ class DocumentsViewController: UIViewController {
         }
     }
     
+    func RemoveFile(Path: String, FileName: String) {
+        
+        FCFileManager.removeItem(atPath: Path)
+        bhalert.ShowBHAlertController(Title: "Hi", message: "Successful remove: \n \(FileName)", TitleButton: "ok", Target: self)
+        self.SetupDocumentsDirectoryPath()
+        self.viewWillAppear(true)
+    }
 }
 
 extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return files.count
     }
+    
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let Cell = DocumentsTableView.dequeueReusableCell(withIdentifier: "DocCell") as? DocumentsTableViewCell else {
@@ -205,12 +236,19 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
         
         let minutes = (secs % 3600) / 60
         let seconds = (secs % 3600) % 60
+        let hours = secs / 3600
         
         if FileName.lowercased().contains(".mp4") {
             
-            Cell.FileNameLabel.text = FileName.replacingOccurrences(of: ".mp4", with: "")
-            Cell.SizeandDurVideo.text = "\(self.files[indexPath.row].absoluteURL.fileSizeString) | \(minutes):\(seconds)"
-            Cell.ImageFile.image = self.generateThumbnail(VideoAsset: asset)
+            if hours == 0 {
+                Cell.FileNameLabel.text = FileName.replacingOccurrences(of: ".mp4", with: "")
+                Cell.SizeandDurVideo.text = "\(self.files[indexPath.row].absoluteURL.fileSizeString) \(minutes):\(seconds)"
+                Cell.ImageFile.image = self.generateThumbnail(VideoAsset: asset)
+            } else {
+                Cell.FileNameLabel.text = FileName.replacingOccurrences(of: ".mp4", with: "")
+                Cell.SizeandDurVideo.text = "\(self.files[indexPath.row].absoluteURL.fileSizeString) | \(hours):\(minutes):\(seconds)"
+                Cell.ImageFile.image = self.generateThumbnail(VideoAsset: asset)
+            }
             
         } else if FileName.lowercased().contains(".m4a") {
             
@@ -228,9 +266,97 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             Cell.FileNameLabel.text = FileName.replacingOccurrences(of: ".3gpp", with: "")
             Cell.SizeandDurVideo.text = "\(self.files[indexPath.row].absoluteURL.fileSizeString) | \(minutes):\(seconds)"
             Cell.ImageFile.image = UIImage(named: "video-player")
+        } else {
+            Cell.FileNameLabel.text = FileName
+            Cell.ImageFile.image = UIImage(named: "folder_icon_iPhone")
+            Cell.SizeandDurVideo.text = ""
+            
         }
         
         return Cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    }
+    
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        
+        if FCFileManager.isDirectoryItem(atPath: files[indexPath.row].lastPathComponent) {
+            
+            let DeleteRowAction = UITableViewRowAction(style: .destructive, title: "Remove") { (action, IndexPath) in
+                
+                if String(self.files[indexPath.row].lastPathComponent.suffix(4)) == ".mp4" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".mp4", with: ""))
+                    
+                } else if String(self.files[indexPath.row].lastPathComponent.suffix(4)) == ".MP4" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".MP4", with: ""))
+                    
+                } else if String(self.files[indexPath.row].lastPathComponent.suffix(5)) == ".webm" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".webm", with: ""))
+                    
+                } else if String(self.files[indexPath.row].lastPathComponent.suffix(5)) == ".3gpp" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".3gpp", with: ""))
+                    
+                } else {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".m4a", with: ""))
+                    
+                }
+            }
+            
+            return [DeleteRowAction]
+            
+        } else {
+            let DeleteRowAction = UITableViewRowAction(style: .destructive, title: "Remove") { (action, IndexPath) in
+                
+                if String(self.files[indexPath.row].lastPathComponent.suffix(4)) == ".mp4" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".mp4", with: ""))
+                    
+                } else if String(self.files[indexPath.row].lastPathComponent.suffix(4)) == ".MP4" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".MP4", with: ""))
+                    
+                } else if String(self.files[indexPath.row].lastPathComponent.suffix(5)) == ".webm" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".webm", with: ""))
+                    
+                } else if String(self.files[indexPath.row].lastPathComponent.suffix(5)) == ".3gpp" {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".3gpp", with: ""))
+                    
+                } else {
+                    
+                    self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".m4a", with: ""))
+                    
+                }
+            }
+            
+            let MoveRowAction = UITableViewRowAction(style: .default, title: "Move File") { (action, IndexPath) in
+                
+                // MoveVC
+                let MoveVC = self.storyboard?.instantiateViewController(withIdentifier: "MoveVC") as! MoveFilesViewController
+                let navController = UINavigationController(rootViewController: MoveVC)
+                navController.navigationItem.title = "Select the folder to move file"
+                
+                MoveVC.FileMovedName = self.files[indexPath.row].lastPathComponent
+                print(MoveVC.FileMovedName!)
+                self.present(navController, animated: true, completion: nil)
+            }
+            
+            MoveRowAction.backgroundColor = .blue
+            
+            return [DeleteRowAction, MoveRowAction]
+        }
+        
+        return []
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -258,8 +384,13 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             let ExtractSoundAction = UIAlertAction(title: "Extract the sound from video", style: .default) { (action) in
                 
                 var documentsFolders = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-                self.BHConvertObjC.convertVideo(toAudio: self.files[indexPath.row].absoluteURL, documentsPath: URL(fileURLWithPath: (documentsFolders[0])).appendingPathComponent("\(self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".mp4", with: "", options: .literal)).m4a").absoluteURL)
-                self.SetupDocumentsDirectoryPath()
+                self.BHConvertObjC.convertVideo(toAudio: self.files[indexPath.row].absoluteURL, documentsPath: URL(fileURLWithPath: (documentsFolders[0])).appendingPathComponent("\(self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".mp4", with: "", options: .literal)).m4a").absoluteURL, completionHandler: {
+                    
+                    DispatchQueue.main.async {
+                        tableView.deselectRow(at: indexPath, animated: true)
+                    }
+                    self.SetupDocumentsDirectoryPath()
+                })
             }
             
             let SaveVideoAction = UIAlertAction(title: "Save to camera roll", style: .default) { (action) in
@@ -270,9 +401,11 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
                     if error != nil {
                         print("ERROR Save Video To Camera Roll")
                         self.bhalert.ShowBHAlertController(Title: "hi", message: "ERROR Save Video To Camera Roll", TitleButton: "ok", Target: self)
+                        tableView.deselectRow(at: indexPath, animated: true)
                     } else {
                         print("Success Save Video To Camera Roll")
                         self.bhalert.ShowBHAlertController(Title: "hi", message: "Success Save Video To Camera Roll", TitleButton: "ok", Target: self)
+                        tableView.deselectRow(at: indexPath, animated: true)
                     }
                 })
             }
@@ -281,6 +414,7 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             let ShareItem = UIAlertAction(title: "Share", style: .default) { (action) in
                 let ShareVC = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
                 self.present(ShareVC, animated: true, completion: nil)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
             
@@ -294,6 +428,7 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 let RenameAction = UIAlertAction(title: "Rename!", style: .default, handler: { (action) in
                     FCFileManager.renameItem(atPath: self.files[indexPath.row].lastPathComponent, withName: "\(TextFieldAlertController.textFields![0].text!).mp4")
+                    tableView.deselectRow(at: indexPath, animated: true)
                     self.SetupDocumentsDirectoryPath()
                 })
                 
@@ -307,12 +442,112 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             
             
             let RemoveItem = UIAlertAction(title: "Remove Item", style: .default) { (action) in
-                FCFileManager.removeItem(atPath: self.files[indexPath.row].lastPathComponent)
-                self.SetupDocumentsDirectoryPath()
+                
+                self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".mp4", with: ""))
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
             
-            let CancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let CancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+            
+            AlertController.addAction(PlayButtonAction)
+            AlertController.addAction(ExtractSoundAction)
+            AlertController.addAction(SaveVideoAction)
+            AlertController.addAction(ShareItem)
+            AlertController.addAction(RenameItemAction)
+            AlertController.addAction(RemoveItem)
+            AlertController.addAction(CancelAction)
+            self.present(AlertController, animated: true, completion: nil)
+            
+        } else if String(self.files[indexPath.row].lastPathComponent.suffix(4)) == ".MP4" {
+            
+            print("file is MP4")
+            
+            
+            let PlayButtonAction = UIAlertAction(title: "Play video", style: .default) { (action) in
+                
+                do {
+                    let PlayerItem = AVPlayerItem(url: URL(string: self.files[indexPath.row].absoluteString)!)
+                    self.Player = AVPlayer(playerItem: PlayerItem)
+                    let PlayerController = AVPlayerViewController()
+                    PlayerController.player = self.Player
+                    
+                    self.present(PlayerController, animated: true)
+                    self.Player.play()
+                }
+            }
+            let ExtractSoundAction = UIAlertAction(title: "Extract the sound from video", style: .default) { (action) in
+                
+                var documentsFolders = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                self.BHConvertObjC.convertVideo(toAudio: self.files[indexPath.row].absoluteURL, documentsPath: URL(fileURLWithPath: (documentsFolders[0])).appendingPathComponent("\(self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".MP4", with: "", options: .literal)).m4a").absoluteURL, completionHandler: {
+                    
+                    DispatchQueue.main.async {
+                        tableView.deselectRow(at: indexPath, animated: true)
+                    }
+                    self.SetupDocumentsDirectoryPath()
+                })
+            }
+            
+            let SaveVideoAction = UIAlertAction(title: "Save to camera roll", style: .default) { (action) in
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.files[indexPath.row].absoluteURL)
+                }, completionHandler: { (pass, error) in
+                    
+                    if error != nil {
+                        print("ERROR Save Video To Camera Roll")
+                        self.bhalert.ShowBHAlertController(Title: "hi", message: "ERROR Save Video To Camera Roll", TitleButton: "ok", Target: self)
+                        tableView.deselectRow(at: indexPath, animated: true)
+                    } else {
+                        print("Success Save Video To Camera Roll")
+                        self.bhalert.ShowBHAlertController(Title: "hi", message: "Success Save Video To Camera Roll", TitleButton: "ok", Target: self)
+                        tableView.deselectRow(at: indexPath, animated: true)
+                    }
+                })
+            }
+            
+            
+            let ShareItem = UIAlertAction(title: "Share", style: .default) { (action) in
+                let ShareVC = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
+                self.present(ShareVC, animated: true, completion: nil)
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+            
+            
+            let RenameItemAction = UIAlertAction(title: "Rename video", style: .default) { (action) in
+                
+                let TextFieldAlertController = UIAlertController(title: "Add new name", message: "", preferredStyle: .alert)
+                TextFieldAlertController.addTextField(configurationHandler: { (TextField) in
+                    print(TextField.text!)
+                    TextField.text = self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".MP4", with: "", options: .literal)
+                })
+                
+                let RenameAction = UIAlertAction(title: "Rename!", style: .default, handler: { (action) in
+                    FCFileManager.renameItem(atPath: self.files[indexPath.row].lastPathComponent, withName: "\(TextFieldAlertController.textFields![0].text!).MP4")
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    self.SetupDocumentsDirectoryPath()
+                })
+                
+                let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                
+                TextFieldAlertController.addAction(RenameAction)
+                TextFieldAlertController.addAction(Cancel)
+                
+                self.present(TextFieldAlertController, animated: true, completion: nil)
+            }
+            
+            
+            let RemoveItem = UIAlertAction(title: "Remove Item", style: .default) { (action) in
+                
+                self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".MP4", with: ""))
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+            
+            
+            let CancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
             
             AlertController.addAction(PlayButtonAction)
             AlertController.addAction(ExtractSoundAction)
@@ -331,11 +566,12 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             let ShareAction = UIAlertAction(title: "Share", style: .default) { (action) in
                 let ShareViewController = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
                 self.present(ShareViewController, animated: true, completion: nil)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
             let removeitemAction = UIAlertAction(title: "Remove item", style: .default) { (action) in
-                FCFileManager.removeItem(atPath: self.files[indexPath.row].lastPathComponent)
-                self.SetupDocumentsDirectoryPath()
+                self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".webm", with: ""))
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
             let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -354,11 +590,12 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             let ShareAction = UIAlertAction(title: "Share", style: .default) { (action) in
                 let ShareViewController = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
                 self.present(ShareViewController, animated: true, completion: nil)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
             let removeitemAction = UIAlertAction(title: "Remove item", style: .default) { (action) in
-                FCFileManager.removeItem(atPath: self.files[indexPath.row].lastPathComponent)
-                self.SetupDocumentsDirectoryPath()
+                self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".3gpp", with: ""))
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
             let Cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -368,7 +605,7 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             BHAlertController.addAction(Cancel)
             self.present(BHAlertController, animated: true, completion: nil)
             
-        } else {
+        } else if String(self.files[indexPath.row].lastPathComponent.suffix(4)) == ".m4a" {
             print("file is sound")
             
             let PlayButtonAction = UIAlertAction(title: "Play Sound", style: .default) { (action) in
@@ -388,14 +625,20 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 var documentsFolders = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
                 
-                self.BHConvertSwift.ConvertAudioToVideo(audioURL: self.files[indexPath.row].absoluteURL, destination: URL(fileURLWithPath: (documentsFolders[0])).appendingPathComponent("\(self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".m4a", with: "", options: .literal)).mp4").absoluteURL)
-                self.SetupDocumentsDirectoryPath()
+                self.BHConvertSwift.ConvertAudioToVideo(audioURL: self.files[indexPath.row].absoluteURL, destination: URL(fileURLWithPath: (documentsFolders[0])).appendingPathComponent("\(self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".m4a", with: "", options: .literal)).mp4").absoluteURL, completionHandler: {
+                    
+                    DispatchQueue.main.async {
+                        tableView.deselectRow(at: indexPath, animated: true)
+                    }
+                    self.SetupDocumentsDirectoryPath()
+                })
                 
             }
             
             let ShareItem = UIAlertAction(title: "Share", style: .default) { (action) in
                 let ShareVC = UIActivityViewController(activityItems: [self.files[indexPath.row]], applicationActivities: nil)
                 self.present(ShareVC, animated: true, completion: nil)
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
             let RenameItemAction = UIAlertAction(title: "Rename sound", style: .default) { (action) in
@@ -408,6 +651,7 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 let RenameAction = UIAlertAction(title: "Rename!", style: .default, handler: { (action) in
                     FCFileManager.renameItem(atPath: self.files[indexPath.row].lastPathComponent, withName: "\(TextFieldAlertController.textFields![0].text!).m4a")
+                    tableView.deselectRow(at: indexPath, animated: true)
                     self.SetupDocumentsDirectoryPath()
                 })
                 
@@ -421,11 +665,13 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             
             
             let RemoveItem = UIAlertAction(title: "Remove Item", style: .default) { (action) in
-                FCFileManager.removeItem(atPath: self.files[indexPath.row].lastPathComponent)
-                self.SetupDocumentsDirectoryPath()
+                self.RemoveFile(Path: self.files[indexPath.row].lastPathComponent, FileName: self.files[indexPath.row].lastPathComponent.replacingOccurrences(of: ".m4a", with: ""))
+                tableView.deselectRow(at: indexPath, animated: true)
             }
             
-            let CancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let CancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
             
             AlertController.addAction(PlayButtonAction)
             AlertController.addAction(ConvertToVideoAction)
@@ -434,6 +680,15 @@ extension DocumentsViewController: UITableViewDelegate, UITableViewDataSource {
             AlertController.addAction(RemoveItem)
             AlertController.addAction(CancelAction)
             self.present(AlertController, animated: true, completion: nil)
+        } else {
+            FolderNameSelected = files[indexPath.row].lastPathComponent
+            print(FolderNameSelected!)
+            
+            let folderVC = self.storyboard?.instantiateViewController(withIdentifier: "foldersVC") as! FolderViewController
+            
+            folderVC.folderName = FolderNameSelected
+            self.navigationController?.pushViewController(folderVC, animated: true)
+            
         }
     }
 }
@@ -458,6 +713,15 @@ extension URL {
     
     var creationDate: Date? {
         return attributes?[.creationDate] as? Date
+    }
+    
+    static var documentsDirectory: URL {
+        let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        return try! documentsDirectory.asURL()
+    }
+    
+    static func urlInDocumentsDirectory(with filename: String) -> URL {
+        return documentsDirectory.appendingPathComponent(filename)
     }
 }
 

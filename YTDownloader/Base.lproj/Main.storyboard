@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2kA-mU-LFI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2kA-mU-LFI">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.43"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -100,7 +100,7 @@
         <!--Download's-->
         <scene sceneID="5h7-Y4-a3O">
             <objects>
-                <viewController id="bf7-oU-UFM" customClass="DocumentsViewController" customModule="YTDownloader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DocVC" id="bf7-oU-UFM" customClass="DocumentsViewController" customModule="YTDownloader" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nbK-yN-TSX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,9 +182,14 @@
                         <viewLayoutGuide key="safeArea" id="oFN-Ut-NgZ"/>
                     </view>
                     <navigationItem key="navigationItem" title="Download's" id="Gt5-rI-8ZT">
-                        <barButtonItem key="rightBarButtonItem" title="info" id="X0W-BJ-FyW">
+                        <barButtonItem key="leftBarButtonItem" title="info" id="X0W-BJ-FyW">
                             <connections>
                                 <action selector="ShowAppInfo:" destination="bf7-oU-UFM" id="0e7-2O-I1p"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="5l3-8C-rZT">
+                            <connections>
+                                <action selector="AddFolderButtonBar:" destination="bf7-oU-UFM" id="QUf-ZO-bn9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -243,9 +248,176 @@
             </objects>
             <point key="canvasLocation" x="-423.1884057971015" y="-170.08928571428569"/>
         </scene>
+        <!--Download's-->
+        <scene sceneID="86o-eg-gMm">
+            <objects>
+                <viewController storyboardIdentifier="foldersVC" id="Goo-WO-Adw" customClass="FolderViewController" customModule="YTDownloader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="V1u-t5-0Va">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="G54-IE-MPb">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FolderCell" rowHeight="64" id="ahw-FX-0wt" customClass="FolderTableViewCell" customModule="YTDownloader" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="64"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ahw-FX-0wt" id="iYZ-JU-LK9">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kL3-vh-gsA">
+                                                    <rect key="frame" x="57" y="12.5" width="353" height="20.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="353" id="8fX-wy-e3A"/>
+                                                        <constraint firstAttribute="height" constant="20.5" id="Aiv-LM-Afd"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ysY-6d-Ynj">
+                                                    <rect key="frame" x="7" y="11" width="42" height="42"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="42" id="1Hu-kA-cqi"/>
+                                                        <constraint firstAttribute="width" constant="42" id="IwF-mw-8tL"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Size" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Icd-FF-8Os">
+                                                    <rect key="frame" x="57" y="40" width="88" height="12"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="12" id="HUk-sO-WWa"/>
+                                                        <constraint firstAttribute="width" constant="88" id="tEy-eE-oDx"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ysY-6d-Ynj" firstAttribute="leading" secondItem="iYZ-JU-LK9" secondAttribute="leading" constant="7" id="6HP-Gz-UY9"/>
+                                                <constraint firstItem="kL3-vh-gsA" firstAttribute="leading" secondItem="ysY-6d-Ynj" secondAttribute="trailing" constant="8" id="IgB-7e-qpU"/>
+                                                <constraint firstItem="Icd-FF-8Os" firstAttribute="leading" secondItem="ysY-6d-Ynj" secondAttribute="trailing" constant="8" id="LDK-mE-Mk4"/>
+                                                <constraint firstItem="kL3-vh-gsA" firstAttribute="top" secondItem="iYZ-JU-LK9" secondAttribute="top" constant="12.5" id="Lps-Kg-eAi"/>
+                                                <constraint firstAttribute="trailing" secondItem="Icd-FF-8Os" secondAttribute="trailing" constant="269" id="Nm2-1h-4Dg"/>
+                                                <constraint firstItem="Icd-FF-8Os" firstAttribute="top" secondItem="kL3-vh-gsA" secondAttribute="bottom" constant="7" id="nMO-2t-ebI"/>
+                                                <constraint firstAttribute="bottom" secondItem="Icd-FF-8Os" secondAttribute="bottom" constant="11" id="t4F-FJ-wcG"/>
+                                                <constraint firstItem="ysY-6d-Ynj" firstAttribute="top" secondItem="iYZ-JU-LK9" secondAttribute="top" constant="11" id="yOu-Om-7rA"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="ImageFile" destination="ysY-6d-Ynj" id="yrD-UK-bvW"/>
+                                            <outlet property="NameFile" destination="kL3-vh-gsA" id="YKk-on-3lP"/>
+                                            <outlet property="SizeFile" destination="Icd-FF-8Os" id="wpC-w2-1eD"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No files found" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fbu-t0-W04">
+                                <rect key="frame" x="120.5" y="433" width="173" height="30.5"/>
+                                <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="26"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Fbu-t0-W04" firstAttribute="centerX" secondItem="V1u-t5-0Va" secondAttribute="centerX" id="2OM-QI-P56"/>
+                            <constraint firstAttribute="trailing" secondItem="G54-IE-MPb" secondAttribute="trailing" id="Nze-Bl-Pt5"/>
+                            <constraint firstItem="G54-IE-MPb" firstAttribute="leading" secondItem="V1u-t5-0Va" secondAttribute="leading" id="Y6F-KB-LVS"/>
+                            <constraint firstItem="G54-IE-MPb" firstAttribute="top" secondItem="V1u-t5-0Va" secondAttribute="topMargin" constant="-44" id="YEO-c6-Gk1"/>
+                            <constraint firstItem="Fbu-t0-W04" firstAttribute="centerY" secondItem="V1u-t5-0Va" secondAttribute="centerY" constant="0.25" id="eVj-B1-eqI"/>
+                            <constraint firstAttribute="bottom" secondItem="G54-IE-MPb" secondAttribute="bottom" id="pfo-k1-nOv"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="H7W-Aj-qUq"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Download's" id="ErY-kt-yzg"/>
+                    <connections>
+                        <outlet property="EmptyFolder" destination="Fbu-t0-W04" id="SxP-Vm-xW9"/>
+                        <outlet property="FolderTableView" destination="G54-IE-MPb" id="3QW-l7-Agk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="enD-Hf-VHB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3059" y="-170"/>
+        </scene>
+        <!--Move Files View Controller-->
+        <scene sceneID="NZr-oa-Gm6">
+            <objects>
+                <viewController storyboardIdentifier="MoveVC" id="QCl-5d-Do5" customClass="MoveFilesViewController" customModule="YTDownloader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="q9h-vx-18F">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RAN-rC-hbr">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MoveCell" rowHeight="64" id="Qja-aS-1vM" customClass="MoveFilesTableViewCell" customModule="YTDownloader" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="64"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qja-aS-1vM" id="5A1-hF-16E">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xCm-m7-Nob">
+                                                    <rect key="frame" x="57" y="23" width="353" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="5Dk-ig-2SJ"/>
+                                                        <constraint firstAttribute="width" constant="353" id="8sv-w8-wcB"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="folder_icon_iPhone" translatesAutoresizingMaskIntoConstraints="NO" id="rd1-c0-kzQ">
+                                                    <rect key="frame" x="7" y="11" width="42" height="42"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="42" id="7jn-4h-120"/>
+                                                        <constraint firstAttribute="width" constant="42" id="hYh-Zu-2sm"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="xCm-m7-Nob" secondAttribute="trailing" constant="4" id="BhI-5D-1Km"/>
+                                                <constraint firstItem="xCm-m7-Nob" firstAttribute="leading" secondItem="rd1-c0-kzQ" secondAttribute="trailing" constant="8" id="V9d-Ar-9Ty"/>
+                                                <constraint firstItem="rd1-c0-kzQ" firstAttribute="leading" secondItem="5A1-hF-16E" secondAttribute="leading" constant="7" id="VeB-WI-vy4"/>
+                                                <constraint firstAttribute="bottom" secondItem="xCm-m7-Nob" secondAttribute="bottom" constant="20" id="lTi-ze-W7A"/>
+                                                <constraint firstItem="rd1-c0-kzQ" firstAttribute="top" secondItem="5A1-hF-16E" secondAttribute="top" constant="11" id="suj-Yx-5MR"/>
+                                                <constraint firstItem="xCm-m7-Nob" firstAttribute="top" secondItem="5A1-hF-16E" secondAttribute="top" constant="23" id="t9t-23-fzs"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="FileImage" destination="rd1-c0-kzQ" id="8Cy-cT-u72"/>
+                                            <outlet property="FileNameLabel" destination="xCm-m7-Nob" id="e1Q-sR-p0s"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="RAN-rC-hbr" secondAttribute="trailing" id="S6A-Ja-fza"/>
+                            <constraint firstItem="RAN-rC-hbr" firstAttribute="leading" secondItem="q9h-vx-18F" secondAttribute="leading" id="gLS-Wk-3M1"/>
+                            <constraint firstItem="RAN-rC-hbr" firstAttribute="top" secondItem="q9h-vx-18F" secondAttribute="top" id="kVq-9p-mb4"/>
+                            <constraint firstAttribute="bottom" secondItem="RAN-rC-hbr" secondAttribute="bottom" id="qyB-vP-1nh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ceZ-V6-Ytp"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="VEn-eY-P6u"/>
+                    <connections>
+                        <outlet property="MoveFilesTableView" destination="RAN-rC-hbr" id="ffH-mq-wuO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IM1-UM-yjp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3857" y="-170"/>
+        </scene>
     </scenes>
     <resources>
         <image name="DL" width="24" height="24"/>
         <image name="LV" width="24" height="24"/>
+        <image name="folder_icon_iPhone" width="29" height="37"/>
     </resources>
 </document>
