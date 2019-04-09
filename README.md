@@ -18,4 +18,5 @@
 - [SDAVAssetExportSession](https://github.com/rs/SDAVAssetExportSession)
 - [FRPreferences](https://github.com/FouadRaheb/FRPreferences)
 - [SUBLicenseViewController](https://github.com/insanj/SUBLicenseViewController)
+- [KRProgressHUD](https://github.com/krimpedance/KRProgressHUD/)
 - [BHExtension](https://github.com/BandarHL/BHExtension)
