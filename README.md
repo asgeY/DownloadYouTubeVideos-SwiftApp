@@ -6,7 +6,7 @@
 - Play video/audio (supoort backgraound).
 - Extract the sound from video also convert audio file to video.
 - Save the video in camera roll.
-- Share it with aother apps.
+- Share it with another apps.
 - rename video.
 - create folders and move file in it.
 
