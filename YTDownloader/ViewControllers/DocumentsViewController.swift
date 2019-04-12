@@ -146,6 +146,7 @@ class DocumentsViewController: UIViewController {
             
             FCFileManager.createDirectories(forPath: alertController.textFields![0].text!)
             self.SetupDocumentsDirectoryPath()
+            self.EmptyTableView()
         }
         
         let Cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
